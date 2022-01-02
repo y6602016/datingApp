@@ -13,6 +13,7 @@ namespace API.Data
     }
 
     // declare our entity class in DbContext class, we call it to interact with DB
+    // it will return a set implementing AppUser class that we define in entity folder
     // DbContext.User.Add(new User{Id = 4, Name = John}) = INSERT INTO User(Id, Name) VALUES(4, John)
     public DbSet<AppUser> Users { get; set; }
   }
