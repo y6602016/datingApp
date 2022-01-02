@@ -1,4 +1,4 @@
-
+// we define schema in entity class file
 namespace API.Entities
 {
   public class AppUser
