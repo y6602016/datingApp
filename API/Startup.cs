@@ -51,7 +51,7 @@ namespace API
 
       // add UseCors just after routing and before authorization
       // specify the source from Angular url
-      app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+      app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
 
       app.UseAuthorization();
 
