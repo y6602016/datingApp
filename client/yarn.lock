@@ -173,7 +173,7 @@
 
 "@angular-eslint/schematics@13.0.0-alpha.1":
   version "13.0.0-alpha.1"
-  resolved "https://registry.npmjs.org/@angular-eslint/schematics/-/schematics-13.0.0-alpha.1.tgz"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/schematics/-/schematics-13.0.0-alpha.1.tgz#195c12d73b85c697953eefc83d262ca47846d122"
   integrity sha512-uSYaIKdr+/5xhMMHWMakTcgp6COiur6g/zqcRXX+zdrH75OXgiVte1bhsyQ9rJ8nXWe9JxZ8O6cNYRtDmC1A5Q==
   dependencies:
     "@angular-eslint/eslint-plugin" "13.0.0-alpha.1"
@@ -3492,6 +3492,11 @@ follow-redirects@^1.0.0:
   version "1.14.6"
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.6.tgz"
   integrity sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==
+
+font-awesome@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
+  integrity sha1-j6jPBBGhoxr9B7BtKQK7n8gVoTM=
 
 forwarded@0.2.0:
   version "0.2.0"
