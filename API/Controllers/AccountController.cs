@@ -19,9 +19,9 @@ namespace API.Controllers
 
 
     [HttpPost("register")]
-    public async Task<ActionResult<AppUser>> Register(RegisterDTO registerDTO)
+    public async Task<ActionResult<AppUser>> Register(RegisterDto registerDTO)
     {
-      // if the request is sent by body, we'll receive JSON object, but our parameters
+      // if the request is sent by body, we'll receive a JSON object, but our parameters
       // are string, it will fail. if we use query string, then it's ok.
       // in order to receive username and password successfully, we need to use DTO
 
@@ -48,6 +48,30 @@ namespace API.Controllers
       // here is exactly we save the entity into db
       await _context.SaveChangesAsync();
 
+      return user;
+    }
+
+
+    [HttpPost("login")]
+    public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
+    {
+      // SingleOrDefaultAsync throws an exception if more than one element satisfies the condition
+      var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+      if (user == null) return Unauthorized("Invalid username");
+
+      // now we check the password, we first use the key to find hmac
+      // take user.PasswordSalt as the key for hash
+      using var hmac = new HMACSHA512(user.PasswordSalt);
+
+      // then we use the input password to find the computedHash
+      var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+
+      // then we compare two hashed password
+      // since it's byte[], we iterate the hashed password and compare every bit
+      for (int i = 0; i < computedHash.Length; i++)
+      {
+        if (computedHash[i] != user.PasswordHash[i]) { return Unauthorized("Invalid Password"); }
+      }
       return user;
     }
 
