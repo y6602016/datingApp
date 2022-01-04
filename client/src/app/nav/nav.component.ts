@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from '../_models/user';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-nav',
@@ -8,12 +11,27 @@ import { Component, OnInit } from '@angular/core';
 export class NavComponent implements OnInit {
   model: any = {}
 
-  constructor() { }
+  // we set it public since template file directly use accountService to access
+  // currentUser$, template file will auto sub/unsub the obervables
+  constructor(public accountService: AccountService) { }
 
+  // to pwersist user after logging, we monitor currentUser observable in account service
   ngOnInit(): void {
+
   }
 
   login() {
-    console.log(this.model);
+    // service's login method contains http post method, it returns a observable
+    // it's lazy, so we use subscribe. the response will be the UserDto
+    this.accountService.login(this.model).subscribe(response => {
+      console.log(response);
+    }, error=> { // catch error here, ex: invalid username, which is defined in AccountController
+      console.log(error);
+    })
   }
+
+  logout() {
+    this.accountService.logout();
+  }
+
 }
