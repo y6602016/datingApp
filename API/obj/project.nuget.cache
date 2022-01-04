@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Vvs9qeqUPd8k4PZf40XOxByjP/1FfHy1l7lz22zBPPblCxR0803HTVqw2bfz8WyDZEQO1LAxqgWpmdfdbiEjwQ==",
+  "dgSpecHash": "d2ytce6YyYlbsZRM8wcngaPRCwhbhEGex/2lg49vKw40TY3L3O5lBNyKithYB8Wk7f+kPVjH/7cHs067QFQ5+g==",
   "success": true,
   "projectFilePath": "/Users/mike/Desktop/datingApp/API/API.csproj",
   "expectedPackageFiles": [
     "/Users/mike/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
+    "/Users/mike/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/6.0.1/microsoft.aspnetcore.authentication.jwtbearer.6.0.1.nupkg.sha512",
     "/Users/mike/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
     "/Users/mike/.nuget/packages/microsoft.data.sqlite.core/6.0.1/microsoft.data.sqlite.core.6.0.1.nupkg.sha512",
     "/Users/mike/.nuget/packages/microsoft.entityframeworkcore/6.0.1/microsoft.entityframeworkcore.6.0.1.nupkg.sha512",
@@ -27,6 +28,8 @@
     "/Users/mike/.nuget/packages/microsoft.extensions.primitives/6.0.0/microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "/Users/mike/.nuget/packages/microsoft.identitymodel.jsonwebtokens/6.15.0/microsoft.identitymodel.jsonwebtokens.6.15.0.nupkg.sha512",
     "/Users/mike/.nuget/packages/microsoft.identitymodel.logging/6.15.0/microsoft.identitymodel.logging.6.15.0.nupkg.sha512",
+    "/Users/mike/.nuget/packages/microsoft.identitymodel.protocols/6.10.0/microsoft.identitymodel.protocols.6.10.0.nupkg.sha512",
+    "/Users/mike/.nuget/packages/microsoft.identitymodel.protocols.openidconnect/6.10.0/microsoft.identitymodel.protocols.openidconnect.6.10.0.nupkg.sha512",
     "/Users/mike/.nuget/packages/microsoft.identitymodel.tokens/6.15.0/microsoft.identitymodel.tokens.6.15.0.nupkg.sha512",
     "/Users/mike/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
     "/Users/mike/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.0.6/sqlitepclraw.bundle_e_sqlite3.2.0.6.nupkg.sha512",
