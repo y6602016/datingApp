@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.Interfaces;
+using API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +29,12 @@ namespace API
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      // !!!dependency injection, regestration here!!!
+      // token service should use AddScoped, which has lifetime of http request
+      // we use the token in APIController, and once request come in, this service injected into the
+      // particular controller, then the service instance is created, and when the request finishes, service ends
+      services.AddScoped<ITokenService, TokenService>();
+
       // register and add dbcontext here for our program use, then we can use the ORM
       services.AddDbContext<DataContext>(options =>
       {
