@@ -9,7 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   // passing property down to child component(app-register) should be done here
   // we difine user here, and home template uses this property and pass it to children
-  // <app-register [usersFromHomeComponent]="users"></app-register>
+
+  // <app-register [usersFromHomeComponent]="users" (cancelRegister)="cancelRegisterMode($event)">
+
+  // [usersFromHomeComponent]="users" in this child component means child receives 
+  // value of usersFromHomeComponent from parent's "users" variable
+
+  // (cancelRegister)="cancelRegisterMode($event)"" means child sends event as parameter 
+  // to parent's cancelRegisterMode method
   users: any;
 
   registerMode = false;
@@ -35,4 +42,8 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  // receive event from child component
+  cancelRegisterMode(event: boolean) {
+    this.registerMode = event;
+  }
 }
