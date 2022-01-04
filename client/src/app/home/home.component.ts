@@ -17,30 +17,33 @@ export class HomeComponent implements OnInit {
 
   // (cancelRegister)="cancelRegisterMode($event)"" means child sends event as parameter 
   // to parent's cancelRegisterMode method
-  users: any;
+
+  // <<<this is only for parent-to-child example>>>
+  // users: any;
 
   registerMode = false;
 
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.getUsers();
+    // this.getUsers();
   }
 
   registerToggle() {
     this.registerMode = !this.registerMode;
   }
 
-  getUsers() {
-    // http request return observable, and observable is lazy
-    // we need to call subscribe to operate the data
-    this.http.get('https://localhost:5001/api/users').subscribe(users => {
-      this.users = users;
-    }, error => {
-      console.log(error);
-    })
-  }
+  // <<<this is only for parent-to-child example>>
+  // getUsers() {
+  //   // http request return observable, and observable is lazy
+  //   // we need to call subscribe to operate the data
+  //   this.http.get('https://localhost:5001/api/users').subscribe(users => {
+  //     this.users = users;
+  //   }, error => {
+  //     console.log(error);
+  //   })
+  // }
 
   // receive event from child component
   cancelRegisterMode(event: boolean) {

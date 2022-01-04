@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { map } from "rxjs/operators";
 import { User } from '../_models/user';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,6 +34,23 @@ export class AccountService {
           // set currentUser as the user, which means we use the user to replace the currentuser
           this.currentUserSource.next(user);
         }
+      })
+    )
+  }
+
+  // send post request to the server
+  // when user register, we set his status login, so we use the same pipe as login
+  register(model:any) {
+    return this.http.post(this.baseUrl + 'account/register', model).pipe(
+      map((user: User) => {
+        if(user) {
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSource.next(user);
+        }
+        // if we need the observable information, remeber to return in operator!!
+        // or it return nothing
+        
+        // return user;
       })
     )
   }
