@@ -15,6 +15,7 @@ namespace API.DTOs
     public string Username { get; set; }
 
     [Required]
+    [StringLength(8, MinimumLength = 4)]
     // if we want to limit the password format, we can add [RegularExpression] here
     public string Password { get; set; }
   }
