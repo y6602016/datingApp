@@ -19,6 +19,13 @@ namespace API.Entities
     public string Interests { get; set; }
     public string City { get; set; }
     public string Country { get; set; }
+
+    // photo doesn't need to be DbSet in DataContext since we won't use photo directly
+    // photo has dependency on user, we can create a table for photo
+    // entityframwork is smart enough to know user has a photo foreign key linking
+    // to the photo table since we declare photo in here
+    // but we'd like to use entity frameword convention to define onDelete cascade
+    // so we use fully defining relationship, which declare user in photo as well
     public ICollection<Photo> Photos { get; set; }
 
     public int GetAge()
