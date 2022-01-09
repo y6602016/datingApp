@@ -1,5 +1,6 @@
 using API.Data;
 using API.Entities;
+using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,10 @@ namespace API.Controllers
   [Authorize]
   public class UsersController : BaseApiController
   {
-    private readonly DataContext _context;
-    public UsersController(DataContext context)
+    private readonly IUserRepository _userRepository;
+    public UsersController(IUserRepository userRepository)
     {
-      _context = context;
+      _userRepository = userRepository;
     }
 
     // get all users
@@ -31,18 +32,31 @@ namespace API.Controllers
       // use DataContext to interact with db and query the users object (we define Users method in DataContext)
       // then convert the users to list, since method is async, we need to use await
       // and since we use await, we need to use ToListAsync
-      return await _context.Users.ToListAsync();
+
+      // update: use repository to interact with DbContext in controller
+      return Ok(await _userRepository.GetUsersAsync());
     }
 
     // get the specific user
     // api/users/id
-    [HttpGet("{id}")]
-    public async Task<ActionResult<AppUser>> GetUser(int id)
-    {
-      // only ione specific user, instead returning enumarable objects, return one entity
+    // [HttpGet("{id}")]
+    // public async Task<ActionResult<AppUser>> GetUser(int id)
+    // {
+    //   // only one specific user, instead returning enumarable objects, return one entity
 
-      // use the id parameter to find the user
-      return await _context.Users.FindAsync(id);
+    //   // use the id parameter to find the user
+    //   return Ok(await _userRepository.GetUserAsync(id));
+    // }
+
+    // get the specific user
+    // api/users/username
+    [HttpGet("{username}")]
+    public async Task<ActionResult<AppUser>> GetUser(string username)
+    {
+      // only one specific user, instead returning enumarable objects, return one entity
+
+      // use the username parameter to find the user
+      return Ok(await _userRepository.GetUserByUsernameAsync(username));
     }
   }
 }
