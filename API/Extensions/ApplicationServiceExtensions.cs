@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Extensions
 {
   // this extension class is used for IServiceCollection in Startup.cs file
-  // we set token service dependency injection regestration and dbcontext registration in the method
+  // we set dependency injection regestration and dbcontext registration in the method
 
   // we won't use this class to create instances, so we declare it static class
   // who calss this function is the first parameter "this ... "
@@ -19,6 +19,9 @@ namespace API.Extensions
       // we use the token in APIController, and once request come in, this service injected into the
       // particular controller, then the service instance is created, and when the request finishes, service ends
       services.AddScoped<ITokenService, TokenService>();
+
+      // register IUserRepository injection
+      services.AddScoped<IUserRepository, UserRepository>();
 
       // register and add dbcontext here for our program use, then we can use the ORM
       services.AddDbContext<DataContext>(options =>
