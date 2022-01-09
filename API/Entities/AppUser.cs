@@ -9,7 +9,7 @@ namespace API.Entities
     public string UserName { get; set; }
     public byte[] PasswordHash { get; set; }
     public byte[] PasswordSalt { get; set; }
-    public DateTime DataOfBirth { get; set; }
+    public DateTime DateOfBirth { get; set; }
     public string KnownAs { get; set; }
     public DateTime Created { get; set; } = DateTime.Now;
     public DateTime LastActive { get; set; } = DateTime.Now;
@@ -28,9 +28,13 @@ namespace API.Entities
     // so we use fully defining relationship, which declare user in photo as well
     public ICollection<Photo> Photos { get; set; }
 
-    public int GetAge()
-    {
-      return DataOfBirth.CaculateAge();
-    }
+    // although GetAge can be used for memberDto Age prop, but it leads that automapper QueryableExtensions
+    // map process will select all properties including passwordhash and passwordsalt
+    // we can get age property in AutoMapperProfiles.cs, which is the Configuration file
+
+    // public int GetAge()
+    // {
+    //   return DataOfBirth.CaculateAge();
+    // }
   }
 }

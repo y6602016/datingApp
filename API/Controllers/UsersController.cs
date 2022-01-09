@@ -40,9 +40,14 @@ namespace API.Controllers
       // and since we use await, we need to use ToListAsync
 
       // update: get repository then put it into mapper to get returnable dto
-      var users = await _userRepository.GetUsersAsync();
-      var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
-      return Ok(usersToReturn);
+
+      // var users = await _userRepository.GetUsersAsync();
+      // var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
+      // return Ok(usersToReturn);
+
+      // <optimized>update: map objects to member DTO in repository, just call GetMembersAsync method
+      var users = await _userRepository.GetMembersAsync();
+      return Ok(users);
     }
 
     // get the specific user
@@ -64,9 +69,13 @@ namespace API.Controllers
       // only one specific user, instead returning enumarable objects, return one entity
       // use the username parameter to find the user
       // update: get repository then put it into mapper to get returnable dto
-      var user = await _userRepository.GetUserByUsernameAsync(username);
+      // var user = await _userRepository.GetMemberAsync(username);
 
-      return _mapper.Map<MemberDto>(user);
+      // return _mapper.Map<MemberDto>(user);
+
+      // <optimized>update: objects are mapped to member DTO in repository via automapper QueryableExtensions
+      // just call GetMemberAsync method
+      return await _userRepository.GetMemberAsync(username);
     }
   }
 }

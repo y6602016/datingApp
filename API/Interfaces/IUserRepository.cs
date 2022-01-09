@@ -1,3 +1,4 @@
+using API.DTOs;
 using API.Entities;
 
 namespace API.Interfaces
@@ -13,5 +14,11 @@ namespace API.Interfaces
     Task<AppUser> GetUserAsync(int id);
 
     Task<AppUser> GetUserByUsernameAsync(string username);
+
+    // we may not need to use repository in controller then map to Dto
+    // we may directly map to Dto in repository here
+    Task<IEnumerable<MemberDto>> GetMembersAsync();
+
+    Task<MemberDto> GetMemberAsync(string username);
   }
 }
