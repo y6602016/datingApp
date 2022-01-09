@@ -58,3 +58,4 @@
 /Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.dll
 /Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/Data/UserSeedData.json
