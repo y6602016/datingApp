@@ -1,6 +1,8 @@
 using API.Data;
+using API.Helpers;
 using API.Interfaces;
 using API.Services;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions
@@ -22,6 +24,8 @@ namespace API.Extensions
 
       // register IUserRepository injection
       services.AddScoped<IUserRepository, UserRepository>();
+
+      services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
       // register and add dbcontext here for our program use, then we can use the ORM
       services.AddDbContext<DataContext>(options =>

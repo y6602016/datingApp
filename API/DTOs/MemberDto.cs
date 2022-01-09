@@ -3,7 +3,13 @@ namespace API.DTOs
   public class MemberDto
   {
     public int Id { get; set; }
-    public string UserName { get; set; }
+
+    // Username "n" lower case for angular
+    public string Username { get; set; }
+
+    // auto call method "GetAge()" in AppUser class
+
+    public string PhotoUrl { get; set; }
     public int Age { get; set; }
     public string KnownAs { get; set; }
     public DateTime Created { get; set; }
