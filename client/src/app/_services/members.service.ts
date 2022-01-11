@@ -1,14 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
-
-const httpOptions = {
-  headers: new HttpHeaders({
-    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user')).token
-  })
-}
 
 
 @Injectable({
@@ -18,12 +12,13 @@ export class MembersService {
   baseUrl = environment.apiUrl;
   constructor(private http: HttpClient) { }
   
+  // request header information is added and processed by JwtInterceptor, it will add header
+  // with user token to request then send the request to backend
   getMembers(){
-    console.log(httpOptions)
-    return this.http.get<Member[]>(this.baseUrl + 'users', httpOptions);
+    return this.http.get<Member[]>(this.baseUrl + 'users');
   }
 
   getMember(username : string) {
-    return this.http.get<Member>(this.baseUrl + 'users/' + username, httpOptions);
+    return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 }
