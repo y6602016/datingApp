@@ -19,7 +19,7 @@ const routes: Routes = [
     children: [
       // all children are coverd by the AuthGuard
       {path: 'members', component: MemberListComponent},
-      {path: 'members/:id', component: MemberDetailComponent},
+      {path: 'members/:username', component: MemberDetailComponent},
       {path: 'lists', component: ListsComponent},
       {path: 'messages', component: MessagesComponent},
     ]
