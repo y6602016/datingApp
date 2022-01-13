@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using API.Data;
 using API.DTOs;
 using API.Entities;
@@ -76,6 +77,27 @@ namespace API.Controllers
       // <optimized>update: objects are mapped to member DTO in repository via automapper QueryableExtensions
       // just call GetMemberAsync method
       return await _userRepository.GetMemberAsync(username);
+    }
+
+
+    [HttpPut]
+    public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+    {
+      // take username from the token that the API uses to authenticate
+      var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+      var user = await _userRepository.GetUserByUsernameAsync(username);
+
+      // map memberUpdateDto to the user object
+      _mapper.Map(memberUpdateDto, user);
+
+      // then update _userRepository and let it tracks the user
+      _userRepository.Update(user);
+
+      // now we save the update user
+      if (await _userRepository.SaveAllAsync()) return NoContent();
+
+      return BadRequest("Failed to update the user");
     }
   }
 }
