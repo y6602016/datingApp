@@ -140,6 +140,15 @@
   dependencies:
     tslib "^2.2.0"
 
+"@angular/cdk@^13.1.2":
+  version "13.1.2"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-13.1.2.tgz#aaa1b577d1b8101d3d59f4da9a1ea51b7f7a5191"
+  integrity sha512-xORyqvfM0MueJpxHxVi3CR/X/f1RPKr45vt7NV6/x91OTnh2ukwxg++dAGuA6M5gUAHcVAcaBrfju4GQlU9hmg==
+  dependencies:
+    tslib "^2.3.0"
+  optionalDependencies:
+    parse5 "^5.0.0"
+
 "@angular/cli@~12.2.14":
   version "12.2.14"
   resolved "https://registry.npmjs.org/@angular/cli/-/cli-12.2.14.tgz"
@@ -4871,6 +4880,13 @@ ngx-bootstrap@7.1.2:
   dependencies:
     tslib "^2.0.0"
 
+ngx-spinner@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-spinner/-/ngx-spinner-13.0.0.tgz#d8ea9cfbe5775fdd428ddd98a159f4fea4b52d5d"
+  integrity sha512-q37rOYpRu41+/aHqhfSazHUCz9GAY7+4o3POFC69dW1ew+qB4xyH850lAiCwiNbdhpEOPRShU1litkTxQZJC5A==
+  dependencies:
+    tslib "^2.3.0"
+
 ngx-toastr@^14.2.1:
   version "14.2.1"
   resolved "https://registry.npmjs.org/ngx-toastr/-/ngx-toastr-14.2.1.tgz"
@@ -5305,6 +5321,11 @@ parse5-sax-parser@^6.0.1:
   integrity sha512-kXX+5S81lgESA0LsDuGjAlBybImAChYRMT+/uKCEXFBFOeEhS52qUCydGhU3qLRD8D9DVjaUo821WK7DM4iCeg==
   dependencies:
     parse5 "^6.0.1"
+
+parse5@^5.0.0:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/parse5/-/parse5-5.1.1.tgz#f68e4e5ba1852ac2cadc00f4555fff6c2abb6178"
+  integrity sha512-ugq4DFI0Ptb+WWjAdOK16+u/nHfiIrcE+sh8kZMaM0WllQKLI9rOUq6c2b7cwPkXdzfQESqvoqK6ug7U/Yyzug==
 
 parse5@^6.0.1:
   version "6.0.1"
