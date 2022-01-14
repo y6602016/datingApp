@@ -16,6 +16,9 @@ namespace API.Extensions
   {
     public static IServiceCollection AddAppLicationServices(this IServiceCollection services, IConfiguration config)
     {
+      // config cloudinary settings by implement CloudinarySettings class and use "CloudinarySettings" in appssetting.json file
+      services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+
       // !!!dependency injection, regestration here!!!
       // token service should use AddScoped, which has lifetime of http request
       // we use the token in APIController, and once request come in, this service injected into the
