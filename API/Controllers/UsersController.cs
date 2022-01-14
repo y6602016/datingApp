@@ -2,6 +2,7 @@ using System.Security.Claims;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -16,10 +17,12 @@ namespace API.Controllers
   {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
+    private readonly IPhotoService _photoService;
 
     // inject repository and mapper in constuctor
-    public UsersController(IUserRepository userRepository, IMapper mapper)
+    public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
     {
+      _photoService = photoService;
       _mapper = mapper;
       _userRepository = userRepository;
     }
@@ -64,7 +67,8 @@ namespace API.Controllers
 
     // get the specific user
     // api/users/username
-    [HttpGet("{username}")]
+    // the Name attribute for add-photo api use
+    [HttpGet("{username}", Name = "GetUser")]
     public async Task<ActionResult<MemberDto>> GetUser(string username)
     {
       // only one specific user, instead returning enumarable objects, return one entity
@@ -84,9 +88,8 @@ namespace API.Controllers
     public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
     {
       // take username from the token that the API uses to authenticate
-      var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-      var user = await _userRepository.GetUserByUsernameAsync(username);
+      // we use customized claim principal method define in ClaimsPrincipalExtensions to get username
+      var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
 
       // map memberUpdateDto to the user object
       _mapper.Map(memberUpdateDto, user);
@@ -98,6 +101,45 @@ namespace API.Controllers
       if (await _userRepository.SaveAllAsync()) return NoContent();
 
       return BadRequest("Failed to update the user");
+    }
+
+    [HttpPost("add-photo")]
+    public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
+    {
+      var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+      var result = await _photoService.AddPhotoAsync(file);
+      // if there is an error, return it as BadRequest
+      if (result.Error != null)
+      {
+        return BadRequest(result.Error.Message);
+      }
+
+      // use the received url and publicId to create a new Photo object
+      var photo = new Photo
+      {
+        Url = result.SecureUrl.AbsoluteUri,
+        PublicId = result.PublicId
+      };
+
+      // if user has no photo before, then this new photo is the main photo
+      if (user.Photos.Count == 0)
+      {
+        photo.IsMain = true;
+      }
+
+      user.Photos.Add(photo);
+
+      // save if then return photoDto, convert photo to photoDto by Map
+      if (await _userRepository.SaveAllAsync())
+      {
+        // "GetUser" is the Name defind in HttpGet("{username}" endpoint
+        // we need to return CreatedAtRoute since it returns 201 status code instead of 200
+        // moreover, it's header contains the Location of the url with the uploaded image
+        // we need return this url to client so that users can find their images
+        return CreatedAtRoute("GetUser", new { Username = user.UserName }, _mapper.Map<PhotoDto>(photo));
+      }
+
+      return BadRequest("Problem adding photo");
     }
   }
 }
