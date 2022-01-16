@@ -28,12 +28,7 @@ export class AccountService {
         // process it as user
         const user = response;
         if (user) {
-          // key = 'user', value = stringfied response
-          // store it into the browser to achieve persisted login
-          localStorage.setItem('user', JSON.stringify(user));
-
-          // set currentUser as the user, which means we use the user to replace the currentuser
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
       })
     )
@@ -45,8 +40,7 @@ export class AccountService {
     return this.http.post(this.baseUrl + 'account/register', model).pipe(
       map((user: User) => {
         if(user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
         // if we need the observable information, remeber to return in operator!!
         // or it return nothing
@@ -57,6 +51,11 @@ export class AccountService {
   }
 
   setCurrentUser(user: User) {
+    // key = 'user', value = stringfied response
+    // store it into the browser to achieve persisted login
+    localStorage.setItem('user', JSON.stringify(user));
+
+    // set currentUser as the user, which means we use the user to replace the currentuser
     this.currentUserSource.next(user);
   }
 
