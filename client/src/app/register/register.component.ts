@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
   model: any = {};
   registerForm: FormGroup;
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -25,11 +25,11 @@ export class RegisterComponent implements OnInit {
 
 
   initializeForm() {
-    this.registerForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
+    this.registerForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
       // this.matchValue('password'), password here correspond to below matchTo for controls[matchTo]
-      confirmPassword: new FormControl('', [Validators.required, this.matchValue('password')])
+      confirmPassword: ['', [Validators.required, this.matchValue('password')]]
     })
     // when password is typed and changed, confirmPassword need to update and validate it again
     this.registerForm.controls.password.valueChanges.subscribe(() => {
