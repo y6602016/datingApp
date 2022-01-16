@@ -55,7 +55,7 @@ namespace API
 
       // add UseCors just after UseRouting() and before UseAuthentication()
       // specify the source from Angular url
-      app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+      app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("https://localhost:4200"));
 
       // add UseAuthentication just before UseAuthorization
       app.UseAuthentication();
