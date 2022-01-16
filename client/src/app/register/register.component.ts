@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
 
   initializeForm() {
     this.registerForm = new FormGroup({
-      username: new FormControl('Hello', Validators.required),
+      username: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
       // this.matchValue('password'), password here correspond to below matchTo for controls[matchTo]
       confirmPassword: new FormControl('', [Validators.required, this.matchValue('password')])
@@ -45,6 +45,7 @@ export class RegisterComponent implements OnInit {
       // otherwise attach a validator error called "isMatching" to the control, and it will fail the validation
       return control?.value === control?.parent?.controls[matchTo].value 
       ? null : {isMatching: true}
+      // isMatching is used in template file's hasError('isMatching')
     }
   }
 
