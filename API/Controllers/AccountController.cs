@@ -5,6 +5,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,10 +15,12 @@ namespace API.Controllers
   {
     private readonly DataContext _context;
     private readonly ITokenService _tokenService;
+    private readonly IMapper _mapper;
 
     // dependency injection: inject token service 
-    public AccountController(DataContext context, ITokenService tokenService)
+    public AccountController(DataContext context, ITokenService tokenService, IMapper mapper)
     {
+      _mapper = mapper;
       _tokenService = tokenService;
       _context = context;
     }
@@ -33,19 +36,19 @@ namespace API.Controllers
       // first check the username is unique or not
       if (await UserExists(registerDTO.Username)) return BadRequest("Username is taken");
 
+      // use the mapper to create a user object
+      var user = _mapper.Map<AppUser>(registerDTO);
+
       // HMACSHA512() return dispose, so we use "using"
       // hmac is used for hashing the password
       using var hmac = new HMACSHA512();
 
-      var user = new AppUser
-      {
-        // make it to lower for UserExists method to check unique
-        UserName = registerDTO.Username.ToLower(),
-        // ComputeHash() takes byte[] as parameter, so convert password into byte
-        PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password)),
-        // HMACSHA512() initialize an instance with a key, so just get the key from hmac
-        PasswordSalt = hmac.Key
-      };
+      // make it to lower for UserExists method to check unique
+      user.UserName = registerDTO.Username.ToLower();
+      // ComputeHash() takes byte[] as parameter, so convert password into byte
+      user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password));
+      // HMACSHA512() initialize an instance with a key, so just get the key from hmac
+      user.PasswordSalt = hmac.Key;
 
       // here not actually save entity into db, we just "tracking" it in entity framework
       _context.Users.Add(user);
@@ -57,7 +60,8 @@ namespace API.Controllers
       return new UserDto
       {
         Username = user.UserName,
-        Token = _tokenService.CreateToken(user)
+        Token = _tokenService.CreateToken(user),
+        KnownAs = user.KnownAs
       };
     }
 
@@ -90,7 +94,8 @@ namespace API.Controllers
       {
         Username = user.UserName,
         Token = _tokenService.CreateToken(user),
-        PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
+        PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+        KnownAs = user.KnownAs
       };
     }
 
