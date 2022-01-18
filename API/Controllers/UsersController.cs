@@ -3,6 +3,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +31,9 @@ namespace API.Controllers
     // get all users
     // api/users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+    // use [FromQuery] to spesify that the param is from querystring, if it's empty, it will use default
+    // value set in UserParams, which is _pageSize = 10 and PageNumber { get; set; } = 1;
+    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
     {
       // we can return <List<AppUser>> as well, same thing.
       // but the List containing too many methods, we don't neet them
@@ -50,7 +53,12 @@ namespace API.Controllers
       // return Ok(usersToReturn);
 
       // <optimized>update: map objects to member DTO in repository, just call GetMembersAsync method
-      var users = await _userRepository.GetMembersAsync();
+
+      var users = await _userRepository.GetMembersAsync(userParams);
+      // now users is the PageList with members, we need to add page info into response header
+      // pass the PageList props as params
+      Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
+
       return Ok(users);
     }
 

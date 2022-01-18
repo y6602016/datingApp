@@ -18,7 +18,7 @@ namespace API.Interfaces
 
     // we may not need to use repository in controller then map to Dto
     // we may directly map to Dto in repository here
-    Task<PageList<MemberDto>> GetMembersAsync();
+    Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams);
 
     Task<MemberDto> GetMemberAsync(string username);
   }
