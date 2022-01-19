@@ -55,6 +55,14 @@ namespace API.Data
       query = query.Where(u => u.UserName != userParams.CurrentUsername);
       query = query.Where(u => u.Gender == userParams.Gender);
 
+      // ex: filter 20-30 age, userParams.MaxAge=30 and we push back to -31 years ago as the min birthday
+      // then the filtered person will be valid 
+      var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+      var MaxDob = DateTime.Today.AddYears(-userParams.MinAge);
+      // filter by the birthday range
+      query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= MaxDob);
+
+
       // pass the query as source and the pagenumber and pagesize, CreateAsync will return the 
       // PageList witg elements of this page
       return await PageList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper.
