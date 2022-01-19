@@ -48,13 +48,18 @@ namespace API.Data
     // <optimized>
     public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
     {
-      var query = _context.Users
-        .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-        .AsNoTracking(); // the query is read-only, so we use no tracking
+      var query = _context.Users.AsQueryable(); // make it be AsQueryable so it can be filtered by some criterias
+
+      // filter: find out all other users and filter them by the opposite gender, which means
+      // male user will receive femail user and female user get male users
+      query = query.Where(u => u.UserName != userParams.CurrentUsername);
+      query = query.Where(u => u.Gender == userParams.Gender);
 
       // pass the query as source and the pagenumber and pagesize, CreateAsync will return the 
       // PageList witg elements of this page
-      return await PageList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+      return await PageList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper.
+        ConfigurationProvider).AsNoTracking(),  // the query is read-only, so we use no tracking
+          userParams.PageNumber, userParams.PageSize);
     }
 
     public async Task<AppUser> GetUserAsync(int id)
