@@ -7,6 +7,7 @@ export class UserParams {
   pageNumber = 1;
   pageSize = 5
 
+  // default gender is the opposite gender
   constructor(user:User) {
     this.gender = user.gender === 'female' ? 'male' : 'female';
   }
