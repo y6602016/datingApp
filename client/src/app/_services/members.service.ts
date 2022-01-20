@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
 import { PaginatedResult } from '../_models/pagination';
+import { UserParams } from '../_models/userParams';
 
 
 @Injectable({
@@ -18,45 +19,47 @@ export class MembersService {
   // we store members list in service to avoid reload members again and again, just like we "cache" members here
   members: Member[] = [];
 
-  paginatedResult: PaginatedResult<Member[]> = new PaginatedResult<Member[]>();
-
   constructor(private http: HttpClient) { }
   
   // request header information is added and processed by JwtInterceptor, it will add header
   // with user token to request then send the request to backend
-  getMembers(page?: number, itemsPerPage?: number){
-    let params = new HttpParams();
+  getMembers(userParams: UserParams){
 
-    // if page and itemsPerPage params are not null, we process pagination
-    // convert them to string then append to params
-    if (page !== null && itemsPerPage !== null) {
-      params = params.append('pageNumber', page.toString());
-      params = params.append('pageSize', itemsPerPage.toString());
-    }
+    let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize)
 
-    // if we have members, we return the members from the service as an observable
-    // if (this.members.length > 0) {
-    //   // "of" means something of observable
-    //   return of(this.members);
-    // }
+    params = params.append('minAge', userParams.minAge.toString());
+    params = params.append('maxAge', userParams.maxAge.toString());
+    params = params.append('gender', userParams.gender);
 
-    // otherwise we call api and use operator map to process the observable to assign members to this.members
+    // we call api and use operator map to process the observable to assign members to this.members
     // we observe the response with the params we just created
-    return this.http.get<Member[]>(this.baseUrl + 'users', {observe: 'response', params}).pipe(
+    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params);
+  }
+
+
+  private getPaginatedResult<T>(url: string, params: HttpParams) {
+    const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
+    return this.http.get<T>(url, { observe: 'response', params }).pipe(
       map(response => {
         // type of this.paginatedResult.result is Member[], which is same as response.body
-        this.paginatedResult.result = response.body;
+        paginatedResult.result = response.body;
         if (response.headers.get('Pagination') !== null) {
           // assign the response header's Pagination value assign to paginatedResult.pagination
-          this.paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
         }
-        return this.paginatedResult;
+        return paginatedResult;
       })
-      // map(members => {
-      //   this.members = members;
-      //   return members;
-      // })
-    )
+    );
+  }
+
+  private getPaginationHeaders(pageNumber: number, pageSize: number) {
+    let params = new HttpParams();
+
+    // we process pagination, convert them to string then append to params
+    params = params.append('pageNumber', pageNumber.toString());
+    params = params.append('pageSize', pageSize.toString());
+
+    return params;
   }
 
   getMember(username : string) {
