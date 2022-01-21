@@ -79,10 +79,20 @@ export class MembersService {
   }
 
   getMember(username : string) {
-    const member = this.members.find(x => x.username === username);
-    if (member !== undefined) {
+    // process it as a cache, use member to access the quieried members, if the member
+    // we are finding is already in memberCache, just retreive it.
+    const member = [...this.memberCache.values()]
+      .reduce((arr, elem) => arr.concat(elem.result), []) // flattent the member list
+      .find((member: Member) => member.username === username); // find the first one matches
+    
+    if (member) {
       return of(member);
     }
+    // legacy code since we are using cache
+    // const member = this.members.find(x => x.username === username);
+    // if (member !== undefined) {
+    //   return of(member);
+    // }
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 
