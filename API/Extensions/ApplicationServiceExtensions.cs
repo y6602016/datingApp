@@ -25,8 +25,11 @@ namespace API.Extensions
       // particular controller, then the service instance is created, and when the request finishes, service ends
       services.AddScoped<ITokenService, TokenService>();
 
-      // register puhoto service
+      // register photo service
       services.AddScoped<IPhotoService, PhotoService>();
+
+      // create LogUserActivity service (also need to add it into the BaseApiController)
+      services.AddScoped<LogUserActivity>();
 
       // register IUserRepository injection
       services.AddScoped<IUserRepository, UserRepository>();
