@@ -1,11 +1,13 @@
 import { HttpClient, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, pipe } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
 import { PaginatedResult } from '../_models/pagination';
+import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
+import { AccountService } from './account.service';
 
 
 @Injectable({
@@ -22,8 +24,31 @@ export class MembersService {
   // cache to stroe {key = userParams, value = query objects}
   // so that every same params can store it's query in chache, no need to hit db again
   memberCache = new Map();
+  user: User;
+  userParams: UserParams;
 
-  constructor(private http: HttpClient) { }
+  
+  constructor(private http: HttpClient, private accountService: AccountService) {
+    // store UserParams object in this service since service is a singleton
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
+      this.user = user;
+      this.userParams = new UserParams(user);
+    })
+  }
+
+  // three process to modify userParam object: get, set, reset
+  getUserParams() {
+    return this.userParams;
+  }
+
+  setUserParams(params: UserParams) {
+    this.userParams = params;
+  }
+
+  resetUserParams() {
+    this.userParams = new UserParams(this.user);
+    return this.userParams;
+  }
   
   // request header information is added and processed by JwtInterceptor, it will add header
   // with user token to request then send the request to backend
