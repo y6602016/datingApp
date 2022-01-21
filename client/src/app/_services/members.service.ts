@@ -30,6 +30,7 @@ export class MembersService {
     params = params.append('minAge', userParams.minAge.toString());
     params = params.append('maxAge', userParams.maxAge.toString());
     params = params.append('gender', userParams.gender);
+    params = params.append('orderBy', userParams.orderBy);
 
     // we call api and use operator map to process the observable to assign members to this.members
     // we observe the response with the params we just created
