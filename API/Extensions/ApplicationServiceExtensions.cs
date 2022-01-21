@@ -28,6 +28,9 @@ namespace API.Extensions
       // register photo service
       services.AddScoped<IPhotoService, PhotoService>();
 
+      // register like service
+      services.AddScoped<ILikesRepository, LikesRepository>();
+
       // create LogUserActivity service (also need to add it into the BaseApiController)
       services.AddScoped<LogUserActivity>();
 
