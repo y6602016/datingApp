@@ -28,6 +28,11 @@ namespace API.Entities
     // so we use fully defining relationship, which declare user in photo as well
     public ICollection<Photo> Photos { get; set; }
 
+    public ICollection<UserLike> LikedByUsers { get; set; }
+
+    public ICollection<UserLike> LikedUsers { get; set; }
+
+
     // although GetAge can be used for memberDto Age prop, but it leads that automapper QueryableExtensions
     // map process will select all properties including passwordhash and passwordsalt
     // we can get age property in AutoMapperProfiles.cs, which is the Configuration file

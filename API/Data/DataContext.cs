@@ -17,5 +17,39 @@ namespace API.Data
     // it will return a set implementing AppUser class that we define in entity folder
     // DbContext.User.Add(new User{Id = 4, Name = John}) = INSERT INTO User(Id, Name) VALUES(4, John)
     public DbSet<AppUser> Users { get; set; }
+
+    public DbSet<UserLike> Likes { get; set; }
+
+    // override OnModelCreating which is in DbContext class
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+      base.OnModelCreating(builder);
+
+      // pk is the combination of the source userId and liked userId
+      // defind pk here
+      builder.Entity<UserLike>()
+        .HasKey(k => new { k.SourceUserId, k.LikedUserId });
+
+
+      // table looks like:
+      // sourceUserId      LikedUserId
+      //      2                 4
+      //      3                 1
+
+      // a source user can have many liked user
+      builder.Entity<UserLike>()
+        .HasOne(s => s.SourceUser)
+        .WithMany(l => l.LikedUsers)
+        .HasForeignKey(s => s.SourceUserId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+
+      // a liked user can have many likedBy user (or follower)
+      builder.Entity<UserLike>()
+        .HasOne(s => s.LikedUser)
+        .WithMany(l => l.LikedByUsers)
+        .HasForeignKey(s => s.LikedUserId)
+        .OnDelete(DeleteBehavior.Cascade);
+    }
   }
 }
