@@ -62,6 +62,11 @@ namespace API.Data
       // filter by the birthday range
       query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= MaxDob);
 
+      query = userParams.OrderBy switch
+      {
+        "created" => query.OrderByDescending(u => u.Created),
+        _ => query.OrderByDescending(u => u.LastActive) //default is ordered by lastActive
+      };
 
       // pass the query as source and the pagenumber and pagesize, CreateAsync will return the 
       // PageList witg elements of this page
