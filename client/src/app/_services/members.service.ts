@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
@@ -19,11 +19,21 @@ export class MembersService {
   // we store members list in service to avoid reload members again and again, just like we "cache" members here
   members: Member[] = [];
 
+  // cache to stroe {key = userParams, value = query objects}
+  // so that every same params can store it's query in chache, no need to hit db again
+  memberCache = new Map();
+
   constructor(private http: HttpClient) { }
   
   // request header information is added and processed by JwtInterceptor, it will add header
   // with user token to request then send the request to backend
   getMembers(userParams: UserParams){
+    // check if we have cache for this userParams
+    // Object.values(userParams).join('-') can be as the key
+    var response = this.memberCache.get(Object.values(userParams).join('-'));
+    if (response) {
+      return of(response);
+    }
 
     let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize)
 
@@ -34,7 +44,12 @@ export class MembersService {
 
     // we call api and use operator map to process the observable to assign members to this.members
     // we observe the response with the params we just created
-    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params);
+    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+      .pipe(map(response => {
+        // set map's key and value pair as cache
+        this.memberCache.set(Object.values(userParams).join('-'), response);
+        return response;
+      }))
   }
 
 
