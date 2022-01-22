@@ -33,6 +33,9 @@ namespace API.Entities
     public ICollection<UserLike> LikedUsers { get; set; }
 
 
+    public ICollection<Message> MessagesSent { get; set; }
+    public ICollection<Message> MessagesReceived { get; set; }
+
     // although GetAge can be used for memberDto Age prop, but it leads that automapper QueryableExtensions
     // map process will select all properties including passwordhash and passwordsalt
     // we can get age property in AutoMapperProfiles.cs, which is the Configuration file
