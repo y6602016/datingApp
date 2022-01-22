@@ -11,6 +11,9 @@ namespace API.Helpers
     {
       // use AutoMapper to bind user entity with dto
 
+      // CreateMap<a, b> map from a to b
+
+
       // configure photoUrl in the process of mapping
       // get the source(AppUser)'s frist photo and check it's main photo
       // also, get the source age and calcylate age then map it as well
@@ -22,6 +25,11 @@ namespace API.Helpers
       CreateMap<Photo, PhotoDto>();
       CreateMap<MemberUpdateDto, AppUser>();
       CreateMap<RegisterDto, AppUser>();
+      CreateMap<Message, MessageDto>()
+        .ForMember(dest => dest.SenderPhotoUrl, opt => opt.MapFrom(src =>
+          src.Sender.Photos.FirstOrDefault(x => x.IsMain).Url))
+        .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src =>
+          src.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
     }
 
   }
