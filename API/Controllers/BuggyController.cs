@@ -44,7 +44,7 @@ namespace API.Controllers
     [HttpGet("bad-request")]
     public ActionResult<string> GetBasRequest()
     {
-      return BadRequest("This was not a foor request");
+      return BadRequest();
     }
 
   }
