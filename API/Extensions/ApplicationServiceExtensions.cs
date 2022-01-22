@@ -34,6 +34,9 @@ namespace API.Extensions
       // create LogUserActivity service (also need to add it into the BaseApiController)
       services.AddScoped<LogUserActivity>();
 
+      // register IMessageRepository injection
+      services.AddScoped<IMessageRepository, MessageRepository>();
+
       // register IUserRepository injection
       services.AddScoped<IUserRepository, UserRepository>();
 
