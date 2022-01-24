@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.Entities;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -24,8 +26,10 @@ namespace API
         var context = services.GetRequiredService<DataContext>();
         // apply migration the db
         await context.Database.MigrateAsync();
+
+        var userManager = services.GetRequiredService<UserManager<AppUser>>();
         // call Seed class and use it's SeedUser method to seed the data
-        // await Seed.SeedUser(context);
+        await Seed.SeedUser(userManager);
       }
       catch (Exception ex)
       {
