@@ -8,7 +8,7 @@ import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
   providedIn: 'root'
 })
 export class MessageService {
-  baseUrl = environment.apiUrl;
+baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -24,5 +24,9 @@ export class MessageService {
 
   sendMessage(username: string, content: string) {
     return this.http.post<Message>(this.baseUrl + 'messages', {recipientUsername: username, content})
+  }
+
+  deleteMessage(id: number) {
+    return this.http.delete(this.baseUrl + 'messages/' + id);
   }
 }
