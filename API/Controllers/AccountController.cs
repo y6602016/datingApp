@@ -39,16 +39,18 @@ namespace API.Controllers
       // use the mapper to create a user object
       var user = _mapper.Map<AppUser>(registerDTO);
 
-      // HMACSHA512() return dispose, so we use "using"
-      // hmac is used for hashing the password
-      using var hmac = new HMACSHA512();
+      // ------- removed since we've used IdentityUser ----------
+      // // HMACSHA512() return dispose, so we use "using"
+      // // hmac is used for hashing the password
+      // using var hmac = new HMACSHA512();
 
-      // make it to lower for UserExists method to check unique
-      user.UserName = registerDTO.Username.ToLower();
-      // ComputeHash() takes byte[] as parameter, so convert password into byte
-      user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password));
-      // HMACSHA512() initialize an instance with a key, so just get the key from hmac
-      user.PasswordSalt = hmac.Key;
+      // // make it to lower for UserExists method to check unique
+      // user.UserName = registerDTO.Username.ToLower();
+      // // ComputeHash() takes byte[] as parameter, so convert password into byte
+      // user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password));
+      // // HMACSHA512() initialize an instance with a key, so just get the key from hmac
+      // user.PasswordSalt = hmac.Key;
+      // ------- removed since we've used IdentityUser ----------
 
       // here not actually save entity into db, we just "tracking" it in entity framework
       _context.Users.Add(user);
@@ -76,19 +78,21 @@ namespace API.Controllers
         .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
       if (user == null) return Unauthorized("Invalid username");
 
-      // now we check the password, we first use the key to find hmac
-      // take user.PasswordSalt as the key for hash
-      using var hmac = new HMACSHA512(user.PasswordSalt);
+      // ------- removed since we've used IdentityUser ----------
+      // // now we check the password, we first use the key to find hmac
+      // // take user.PasswordSalt as the key for hash
+      // using var hmac = new HMACSHA512(user.PasswordSalt);
 
-      // then we use the input password to find the computedHash
-      var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+      // // then we use the input password to find the computedHash
+      // var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
-      // then we compare two hashed password
-      // since it's byte[], we iterate the hashed password and compare every bit
-      for (int i = 0; i < computedHash.Length; i++)
-      {
-        if (computedHash[i] != user.PasswordHash[i]) { return Unauthorized("Invalid Password"); }
-      }
+      // // then we compare two hashed password
+      // // since it's byte[], we iterate the hashed password and compare every bit
+      // for (int i = 0; i < computedHash.Length; i++)
+      // {
+      //   if (computedHash[i] != user.PasswordHash[i]) { return Unauthorized("Invalid Password"); }
+      // }
+      // ------- removed since we've used IdentityUser ----------
 
       // return the client a new userDto
       return new UserDto
