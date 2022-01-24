@@ -25,7 +25,7 @@ namespace API
         // apply migration the db
         await context.Database.MigrateAsync();
         // call Seed class and use it's SeedUser method to seed the data
-        await Seed.SeedUser(context);
+        // await Seed.SeedUser(context);
       }
       catch (Exception ex)
       {

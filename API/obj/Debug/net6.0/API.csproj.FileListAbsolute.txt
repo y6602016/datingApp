@@ -63,3 +63,8 @@
 /Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/CloudinaryDotNet.dll
 /Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/Newtonsoft.Json.dll
+/Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+/Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/Microsoft.Extensions.Identity.Core.dll
+/Users/mike/Desktop/datingApp/API/bin/Debug/net6.0/Microsoft.Extensions.Identity.Stores.dll
