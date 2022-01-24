@@ -1,4 +1,6 @@
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -7,7 +9,9 @@ namespace API.Data
   // DbContext acts as a brdige between our entity classes and the database
   // we create DataContext implementing DbContext as the DbContext
   // Dbcontext will interact with DB
-  public class DataContext : DbContext
+  public class DataContext : IdentityDbContext<AppUser, AppRole, int,
+    IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
+    IdentityRoleClaim<int>, IdentityUserToken<int>>
   {
     public DataContext(DbContextOptions options) : base(options)
     {
@@ -16,7 +20,8 @@ namespace API.Data
     // declare a method in DbContext class to operate entity class, we call it to interact with DB
     // it will return a set implementing AppUser class that we define in entity folder
     // DbContext.User.Add(new User{Id = 4, Name = John}) = INSERT INTO User(Id, Name) VALUES(4, John)
-    public DbSet<AppUser> Users { get; set; }
+
+    // public DbSet<AppUser> Users { get; set; }
 
     public DbSet<UserLike> Likes { get; set; }
     public DbSet<Message> Messages { get; set; }
@@ -25,6 +30,20 @@ namespace API.Data
     protected override void OnModelCreating(ModelBuilder builder)
     {
       base.OnModelCreating(builder);
+
+
+      // configuration for appUser and appRole, many to many
+      builder.Entity<AppUser>()
+        .HasMany(ur => ur.UserRoles)
+        .WithOne(u => u.User)
+        .HasForeignKey(ur => ur.UserId)
+        .IsRequired();
+
+      builder.Entity<AppRole>()
+        .HasMany(ur => ur.UserRoles)
+        .WithOne(u => u.Role)
+        .HasForeignKey(ur => ur.RoleId)
+        .IsRequired();
 
       // pk is the combination of the source userId and liked userId
       // defind pk here
