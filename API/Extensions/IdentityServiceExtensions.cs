@@ -44,6 +44,14 @@ namespace API.Extensions
           };
         });
 
+      // add role permission policy (authorization)
+      services.AddAuthorization(opt =>
+      {
+        // theses two policy applied on the AdminController author policy
+        opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+        opt.AddPolicy("MOderatePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+      });
+
       return services;
     }
   }
