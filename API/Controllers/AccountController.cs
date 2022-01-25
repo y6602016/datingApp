@@ -55,6 +55,14 @@ namespace API.Controllers
         return BadRequest(result.Errors);
       }
 
+      // add role for the new user
+      var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+
+      if (!roleResult.Succeeded)
+      {
+        return BadRequest(result.Errors);
+      }
+
       // ------- removed since we've used IdentityUser ----------
       // // HMACSHA512() return dispose, so we use "using"
       // // hmac is used for hashing the password
@@ -76,7 +84,7 @@ namespace API.Controllers
       return new UserDto
       {
         Username = user.UserName,
-        Token = _tokenService.CreateToken(user),
+        Token = await _tokenService.CreateToken(user),
         KnownAs = user.KnownAs,
         Gender = user.Gender
       };
@@ -120,7 +128,7 @@ namespace API.Controllers
       return new UserDto
       {
         Username = user.UserName,
-        Token = _tokenService.CreateToken(user),
+        Token = await _tokenService.CreateToken(user),
         PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
         KnownAs = user.KnownAs,
         Gender = user.Gender

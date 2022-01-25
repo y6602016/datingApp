@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using API.Entities;
 using API.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Services
@@ -13,13 +14,15 @@ namespace API.Services
     private readonly SymmetricSecurityKey _key;
     // contructor use config's TokenKey converted to byte array and pass it 
     // to create an instance key of SymmetricSecurityKey
-    public TokenService(IConfiguration config)
+    private readonly UserManager<AppUser> _userManager;
+    public TokenService(IConfiguration config, UserManager<AppUser> userManager)
     {
+      _userManager = userManager;
       _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
     }
 
     // now we use the created key and username to create JWT token
-    public string CreateToken(AppUser user)
+    public async Task<string> CreateToken(AppUser user)
     {
       // create token = tokenHandler + tokenDescripter
       // tokenDescripter = claims + credentials + expiretime
@@ -29,6 +32,12 @@ namespace API.Services
           new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
           new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
       };
+
+      // extract the user's role
+      var roles = await _userManager.GetRolesAsync(user);
+
+      // add role info into claim
+      claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
       // create credentials
       var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

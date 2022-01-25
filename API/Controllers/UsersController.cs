@@ -28,6 +28,7 @@ namespace API.Controllers
       _userRepository = userRepository;
     }
 
+    [Authorize(Roles = "Admin")]
     // get all users
     // api/users
     [HttpGet]
@@ -83,6 +84,7 @@ namespace API.Controllers
     // get the specific user
     // api/users/username
     // the Name attribute for add-photo api use
+    [Authorize(Roles = "Member")]
     [HttpGet("{username}", Name = "GetUser")]
     public async Task<ActionResult<MemberDto>> GetUser(string username)
     {
