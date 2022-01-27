@@ -51,6 +51,12 @@ export class AccountService {
   }
 
   setCurrentUser(user: User) {
+    user.roles = [];
+    // decode the user token and extract the token role payload
+    const roles = this.getDecodedToken(user.token).role;
+    // check roles is a array or not. if user only has one role, it's just a string not an array
+    Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
+
     // key = 'user', value = stringfied response
     // store it into the browser to achieve persisted login
     localStorage.setItem('user', JSON.stringify(user));
@@ -63,5 +69,9 @@ export class AccountService {
     // remove user key from browser if user log out
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
+  }
+
+  getDecodedToken(token) {
+    return JSON.parse(atob(token.split('.')[1]));
   }
 }
