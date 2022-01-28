@@ -8,6 +8,7 @@ using API.Extensions;
 using API.Interfaces;
 using API.Middleware;
 using API.Services;
+using API.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,9 @@ namespace API
 
       // use extension method here, this method is defined in extensions folder
       services.AddIdentityService(_config);
+
+      // register signalR here
+      services.AddSignalR();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +69,9 @@ namespace API
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();
+
+        // add signalR to routing as well
+        endpoints.MapHub<PresenceHub>("hubs/presence");
       });
     }
   }
