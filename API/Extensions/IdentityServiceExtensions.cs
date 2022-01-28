@@ -42,6 +42,29 @@ namespace API.Extensions
             ValidateIssuer = false, // Issuer = API server
             ValidateAudience = false, // Audience = Angular
           };
+
+          // add events for signalR auth 
+          options.Events = new JwtBearerEvents
+          {
+            OnMessageReceived = context =>
+            {
+              // extract the token ba accessing the key "access_tken" defined in signalR
+              var accessToken = context.Request.Query["access_token"];
+
+              // set the path request from
+              var path = context.HttpContext.Request.Path;
+
+              // check token exitsts or not
+              if (!string.IsNullOrEmpty(accessToken) &&
+                path.StartsWithSegments("/hubs"))
+              {
+                // if token exists, then assign it to be as context.Token
+                context.Token = accessToken;
+              }
+
+              return Task.CompletedTask;
+            }
+          };
         });
 
       // add role permission policy (authorization)
