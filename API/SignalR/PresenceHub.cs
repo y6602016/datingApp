@@ -18,13 +18,13 @@ namespace API.SignalR
       // record the username and connectionId into the tracker(a shared dict)
       await _tracker.UserConnected(Context.User.GetUsername(), Context.ConnectionId);
 
-      // send message when online
+      // call UserIsOnline to other users
       await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUsername());
 
       // get all online users
       var currentUsers = await _tracker.GetOnlineUsers();
 
-      // send message to all online users
+      // call GetOnlineUsers to all online users
       await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
     }
 
@@ -32,13 +32,13 @@ namespace API.SignalR
     {
       await _tracker.UserDisconnected(Context.User.GetUsername(), Context.ConnectionId);
 
-      // send message when offline
+      // call UserIsOffline to other users
       await Clients.Others.SendAsync("UserIsOffline", Context.User.GetUsername());
 
       // get all online users
       var currentUsers = await _tracker.GetOnlineUsers();
 
-      // send message to all online users
+      // call GetOnlineUsers to all online users
       await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
 
       // if there is an exception, pass to parent class
