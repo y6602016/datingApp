@@ -75,6 +75,9 @@ namespace API
 
         // add signalR to routing as well
         endpoints.MapHub<PresenceHub>("hubs/presence");
+
+        // add message to routing
+        endpoints.MapHub<MessageHub>("hubs/message");
       });
     }
   }
