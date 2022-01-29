@@ -2,6 +2,7 @@ using API.Data;
 using API.Helpers;
 using API.Interfaces;
 using API.Services;
+using API.SignalR;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,9 @@ namespace API.Extensions
   {
     public static IServiceCollection AddAppLicationServices(this IServiceCollection services, IConfiguration config)
     {
+      // add signalR presenceTracker, it has a shared dict to record all online username and their connectionId
+      services.AddSingleton<PresenceTracker>();
+
       // config cloudinary settings by implement CloudinarySettings class and use "CloudinarySettings" in appssetting.json file
       services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
 
