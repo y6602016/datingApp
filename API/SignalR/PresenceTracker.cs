@@ -7,8 +7,10 @@ namespace API.SignalR
     private static readonly Dictionary<string, List<string>> OnlineUsers =
         new Dictionary<string, List<string>>();
 
-    public Task UserConnected(string username, string connectionId)
+    public Task<bool> UserConnected(string username, string connectionId)
     {
+      bool isOnline = false;
+
       // since list string is a shared list, we need to lock OnlineUsers to prevent
       // concurrent user to access the dict at the same time
       lock (OnlineUsers)
@@ -21,19 +23,21 @@ namespace API.SignalR
         else
         { // otherwise we add a new list initialized with the connectionId
           OnlineUsers.Add(username, new List<string> { connectionId });
+          isOnline = true;
         }
       }
-      return Task.CompletedTask;
+      return Task.FromResult(isOnline);
     }
 
-    public Task UserDisconnected(string username, string connectionId)
+    public Task<bool> UserDisconnected(string username, string connectionId)
     {
       lock (OnlineUsers)
       {
+        bool isOffline = false;
         // if not cantains the username, just return 
         if (!OnlineUsers.ContainsKey(username))
         {
-          return Task.CompletedTask;
+          return Task.FromResult(isOffline);
         }
         // remove the connectionId from the connectionId list
         OnlineUsers[username].Remove(connectionId);
@@ -42,9 +46,10 @@ namespace API.SignalR
         if (OnlineUsers[username].Count == 0)
         {
           OnlineUsers.Remove(username);
+          isOffline = true;
         }
 
-        return Task.CompletedTask;
+        return Task.FromResult(isOffline);
       }
     }
 

@@ -16,30 +16,31 @@ namespace API.SignalR
     public override async Task OnConnectedAsync()
     {
       // record the username and connectionId into the tracker(a shared dict)
-      await _tracker.UserConnected(Context.User.GetUsername(), Context.ConnectionId);
+      var isOnline = await _tracker.UserConnected(Context.User.GetUsername(), Context.ConnectionId);
 
-      // call UserIsOnline to other users
-      await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUsername());
+      if (isOnline)
+      {
+        // call UserIsOnline to other users
+        await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUsername());
+      }
 
       // get all online users
       var currentUsers = await _tracker.GetOnlineUsers();
 
-      // call GetOnlineUsers to all online users
-      await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
+      // call GetOnlineUsers to the caller
+      await Clients.Caller.SendAsync("GetOnlineUsers", currentUsers);
     }
 
     public override async Task OnDisconnectedAsync(Exception exception)
     {
-      await _tracker.UserDisconnected(Context.User.GetUsername(), Context.ConnectionId);
+      var isOffline = await _tracker.UserDisconnected(Context.User.GetUsername(), Context.ConnectionId);
 
-      // call UserIsOffline to other users
-      await Clients.Others.SendAsync("UserIsOffline", Context.User.GetUsername());
+      if (isOffline)
+      {
+        // call UserIsOffline to other users
+        await Clients.Others.SendAsync("UserIsOffline", Context.User.GetUsername());
+      }
 
-      // get all online users
-      var currentUsers = await _tracker.GetOnlineUsers();
-
-      // call GetOnlineUsers to all online users
-      await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
 
       // if there is an exception, pass to parent class
       await base.OnDisconnectedAsync(exception);
