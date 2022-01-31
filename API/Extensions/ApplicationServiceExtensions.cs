@@ -32,17 +32,22 @@ namespace API.Extensions
       // register photo service
       services.AddScoped<IPhotoService, PhotoService>();
 
-      // register like service
-      services.AddScoped<ILikesRepository, LikesRepository>();
-
       // create LogUserActivity service (also need to add it into the BaseApiController)
       services.AddScoped<LogUserActivity>();
 
+      // ====== we dont need to inject repositories since we can use unit of work ======
+      // register like service
+      // services.AddScoped<ILikesRepository, LikesRepository>();
+
       // register IMessageRepository injection
-      services.AddScoped<IMessageRepository, MessageRepository>();
+      // services.AddScoped<IMessageRepository, MessageRepository>();
 
       // register IUserRepository injection
-      services.AddScoped<IUserRepository, UserRepository>();
+      // services.AddScoped<IUserRepository, UserRepository>();
+
+      // inject unit of work to replace above three repositories
+      services.AddScoped<IUnitOfWork, UnitOfWork>();
+      // ==============================================
 
       services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 

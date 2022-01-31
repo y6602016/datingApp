@@ -95,12 +95,12 @@ namespace API.Data
         .ToListAsync();
     }
 
-    public async Task<bool> SaveAllAsync()
-    {
-      // make sure greater tham 0 chage has been saved
-      // SaveChangesAsync() return int, so we return it's result > 0 or not
-      return await _context.SaveChangesAsync() > 0;
-    }
+    // public async Task<bool> SaveAllAsync()
+    // {
+    //   // make sure greater tham 0 chage has been saved
+    //   // SaveChangesAsync() return int, so we return it's result > 0 or not
+    //   return await _context.SaveChangesAsync() > 0;
+    // }
 
     public void Update(AppUser user)
     {

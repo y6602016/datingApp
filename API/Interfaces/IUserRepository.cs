@@ -8,7 +8,9 @@ namespace API.Interfaces
   {
     void Update(AppUser user);
 
-    Task<bool> SaveAllAsync();
+
+    // don't need it since we have Complete function in UnitOfWork
+    // Task<bool> SaveAllAsync();
 
     Task<IEnumerable<AppUser>> GetUsersAsync();
 
