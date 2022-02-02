@@ -66,41 +66,45 @@ namespace API.Data
       // convert the all messages as Queryable
       var query = _context.Messages
         .OrderByDescending(m => m.MessageSent)
+        .ProjectTo<MessageDto>(_mapper.ConfigurationProvider) // project to Dto here, then no need to use too much "select" below
         .AsQueryable();
 
       // filter out the needed query objects
       query = messageParams.Container switch
       {
-        "Inbox" => query.Where(u => u.Recipient.UserName == messageParams.Username
+        "Inbox" => query.Where(u => u.RecipientUsername == messageParams.Username
           && u.RecipientDeleted == false),
-        "Outbox" => query.Where(u => u.Sender.UserName == messageParams.Username
+        "Outbox" => query.Where(u => u.SenderUsername == messageParams.Username
           && u.SenderDeleted == false),
-        _ => query.Where(u => u.Recipient.UserName == messageParams.Username
+        _ => query.Where(u => u.RecipientUsername == messageParams.Username
           && u.RecipientDeleted == false
           && u.DateRead == null) // default case, not read yet
       };
 
-      // prohect the query to dto
-      var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
+      // project the query to dto, not do it here, do it earlier in the query creation
+      // var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
 
-      return await PageList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
+      return await PageList<MessageDto>.CreateAsync(query, messageParams.PageNumber, messageParams.PageSize);
     }
 
     // get all messages between currentUser and recipientUser no matter who sends
     public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, string recipientUsername)
     {
       var messages = await _context.Messages
-        .Include(u => u.Sender).ThenInclude(p => p.Photos)
-        .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+        // .Include(u => u.Sender).ThenInclude(p => p.Photos) // no need anymore since we use projection below, "Include" uses "join"
+        // .Include(u => u.Recipient).ThenInclude(p => p.Photos)
         .Where(m => ((m.Recipient.UserName == currentUsername && m.RecipientDeleted == false)
           && m.Sender.UserName == recipientUsername)
           || (m.Recipient.UserName == recipientUsername
           && (m.Sender.UserName == currentUsername && m.SenderDeleted == false))
         )
         .OrderBy(m => m.MessageSent)
+        .ProjectTo<MessageDto>(_mapper.ConfigurationProvider) // project to Dto here instead doing it with mapper.Map at the end, 
+                                                              // ProjectTo must be the last call in the chain. ORMs work with entities, not DTOs. 
+                                                              // So apply any filtering and sorting on entities and, as the last step, project to DTOs.
         .ToListAsync();
 
-      var unreadMessages = messages.Where(m => m.DateRead == null && m.Recipient.UserName == currentUsername).ToList();
+      var unreadMessages = messages.Where(m => m.DateRead == null && m.RecipientUsername == currentUsername).ToList();
       if (unreadMessages.Any())
       {
         foreach (var message in unreadMessages)
@@ -109,7 +113,8 @@ namespace API.Data
         }
       }
 
-      return _mapper.Map<IEnumerable<MessageDto>>(messages);
+      // return _mapper.Map<IEnumerable<MessageDto>>(messages);
+      return messages;
     }
 
     public void RemoveConnection(Connection connection)
