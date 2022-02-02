@@ -31,7 +31,7 @@ namespace API.Helpers
         .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src =>
           src.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
       // when we return time to the client, we'll append 'z' at the end of the time to indicate it's Utc time
-      CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
+      // CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
     }
 
   }

@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
@@ -98,20 +99,13 @@ namespace API.Data
           || (m.Recipient.UserName == recipientUsername
           && (m.Sender.UserName == currentUsername && m.SenderDeleted == false))
         )
+        .MarkUnreadAsRead(currentUsername) // fix EF change tracking bug. because we use projection below, we need to modify entity
+                                           // before we project them. so we get unread entity and mark them first, process it in the MarkUnreadAsRead function in QueryableExtensions file
         .OrderBy(m => m.MessageSent)
         .ProjectTo<MessageDto>(_mapper.ConfigurationProvider) // project to Dto here instead doing it with mapper.Map at the end, 
                                                               // ProjectTo must be the last call in the chain. ORMs work with entities, not DTOs. 
                                                               // So apply any filtering and sorting on entities and, as the last step, project to DTOs.
         .ToListAsync();
-
-      var unreadMessages = messages.Where(m => m.DateRead == null && m.RecipientUsername == currentUsername).ToList();
-      if (unreadMessages.Any())
-      {
-        foreach (var message in unreadMessages)
-        {
-          message.DateRead = DateTime.UtcNow;
-        }
-      }
 
       // return _mapper.Map<IEnumerable<MessageDto>>(messages);
       return messages;
