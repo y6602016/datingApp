@@ -22,6 +22,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+// In Startup.cs, you can also set up all of your configurations which tells 
+// the framework how you want the application to start and execute.
 namespace API
 {
   public class Startup
