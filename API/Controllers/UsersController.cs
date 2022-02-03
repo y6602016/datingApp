@@ -55,11 +55,11 @@ namespace API.Controllers
       // return Ok(usersToReturn);
 
       // get the user and set it's userParams gender
-      var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
+      var gender = await _unitOfWork.UserRepository.GetUserGender(User.GetUsername()); // use getuserGender to only get gender
       userParams.CurrentUsername = User.GetUsername();
       if (string.IsNullOrEmpty(userParams.Gender))
       {
-        userParams.Gender = user.Gender == "male" ? "femail" : "male";
+        userParams.Gender = gender == "male" ? "femail" : "male";
       }
       // <optimized>update: map objects to member DTO in repository, just call GetMembersAsync method
 
