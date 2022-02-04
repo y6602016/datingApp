@@ -54,7 +54,7 @@ namespace API.Extensions
       // register and add dbcontext here for our program use, then we can use the ORM
       services.AddDbContext<DataContext>(options =>
       {
-        options.UseSqlite(config.GetConnectionString("DefaultConnection")); // connection string is set in appsettings.Dev file
+        options.UseNpgsql(config.GetConnectionString("DefaultConnection")); // connection string is set in appsettings.Dev file
       });
 
       return services;

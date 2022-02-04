@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "IA/UYMm1PPD8CMGlNPu8o2ZVEZ+5S2+eq8a2TiH4hn75B4xdNjmHBdRR1tV9nI1+i3lN6ysXdvy3iGQ/Uwsm0w==",
+  "dgSpecHash": "CmnQVjHYYNiKU4If86xJdGM5Vx1bi0EWfJO2ziZK3jy1zsXRUCz0VwB5niTxVd/g9drNgdoYkVOJ/Qfrnso9eA==",
   "success": true,
   "projectFilePath": "/Users/mike/Desktop/datingApp/API/API.csproj",
   "expectedPackageFiles": [
@@ -45,6 +45,8 @@
     "/Users/mike/.nuget/packages/microsoft.identitymodel.tokens/6.15.0/microsoft.identitymodel.tokens.6.15.0.nupkg.sha512",
     "/Users/mike/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
     "/Users/mike/.nuget/packages/newtonsoft.json/12.0.3/newtonsoft.json.12.0.3.nupkg.sha512",
+    "/Users/mike/.nuget/packages/npgsql/6.0.3/npgsql.6.0.3.nupkg.sha512",
+    "/Users/mike/.nuget/packages/npgsql.entityframeworkcore.postgresql/6.0.3/npgsql.entityframeworkcore.postgresql.6.0.3.nupkg.sha512",
     "/Users/mike/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.0.6/sqlitepclraw.bundle_e_sqlite3.2.0.6.nupkg.sha512",
     "/Users/mike/.nuget/packages/sqlitepclraw.core/2.0.6/sqlitepclraw.core.2.0.6.nupkg.sha512",
     "/Users/mike/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.0.6/sqlitepclraw.lib.e_sqlite3.2.0.6.nupkg.sha512",

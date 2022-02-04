@@ -18,6 +18,7 @@ namespace API.Data
   {
     public DataContext(DbContextOptions options) : base(options)
     {
+      AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     // declare a method in DbContext class to operate entity class, we call it to interact with DB
