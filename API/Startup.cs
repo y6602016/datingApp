@@ -84,6 +84,10 @@ namespace API
 
         // add message to routing
         endpoints.MapHub<MessageHub>("hubs/message");
+
+        // server can't recongize client url, it only knows the api url
+        // the client url defined in angular routing should be fallbacked to the FallbackController
+        endpoints.MapFallbackToController("Index", "Fallback");
       });
     }
   }
