@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "BdwByAa9vxxihWJi8BSuVWCDCcB0N8TPb28vyj3+AEw=",
+  "Hash": "YnICT3dMZEIv96vZN1T7ctIs8v2PITbplI7txIZQYYY=",
   "Source": "API",
   "BasePath": "_content/API",
   "Mode": "Default",
@@ -170,12 +170,12 @@
       "OriginalItemSpec": "wwwroot/index.html"
     },
     {
-      "Identity": "/Users/mike/Desktop/datingApp/API/wwwroot/main.0cb51563effbbde18a09.js",
+      "Identity": "/Users/mike/Desktop/datingApp/API/wwwroot/main.47eb5b57fdfbfd891f59.js",
       "SourceId": "API",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/mike/Desktop/datingApp/API/wwwroot/",
       "BasePath": "_content/API",
-      "RelativePath": "main.0cb51563effbbde18a09.js",
+      "RelativePath": "main.47eb5b57fdfbfd891f59.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -184,7 +184,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/main.0cb51563effbbde18a09.js"
+      "OriginalItemSpec": "wwwroot/main.47eb5b57fdfbfd891f59.js"
     },
     {
       "Identity": "/Users/mike/Desktop/datingApp/API/wwwroot/polyfills.903c17d0294a54c99e7f.js",
