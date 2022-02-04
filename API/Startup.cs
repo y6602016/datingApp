@@ -71,6 +71,10 @@ namespace API
 
       app.UseAuthorization();
 
+      // use index html, which is the built client angular file
+      app.UseDefaultFiles();
+      app.UseStaticFiles();
+
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();
