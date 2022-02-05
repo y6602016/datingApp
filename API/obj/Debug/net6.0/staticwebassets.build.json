@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "YnICT3dMZEIv96vZN1T7ctIs8v2PITbplI7txIZQYYY=",
+  "Hash": "aTgqB34aADxSEEqUDmUFJZ1Gh9IK9jQM5rK/0FiAb3g=",
   "Source": "API",
   "BasePath": "_content/API",
   "Mode": "Default",
@@ -170,12 +170,12 @@
       "OriginalItemSpec": "wwwroot/index.html"
     },
     {
-      "Identity": "/Users/mike/Desktop/datingApp/API/wwwroot/main.47eb5b57fdfbfd891f59.js",
+      "Identity": "/Users/mike/Desktop/datingApp/API/wwwroot/main.4fbf7a7640b931149fef.js",
       "SourceId": "API",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/mike/Desktop/datingApp/API/wwwroot/",
       "BasePath": "_content/API",
-      "RelativePath": "main.47eb5b57fdfbfd891f59.js",
+      "RelativePath": "main.4fbf7a7640b931149fef.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -184,7 +184,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/main.47eb5b57fdfbfd891f59.js"
+      "OriginalItemSpec": "wwwroot/main.4fbf7a7640b931149fef.js"
     },
     {
       "Identity": "/Users/mike/Desktop/datingApp/API/wwwroot/polyfills.903c17d0294a54c99e7f.js",
@@ -221,12 +221,12 @@
       "OriginalItemSpec": "wwwroot/runtime.4b1540bf51da5ef20c67.js"
     },
     {
-      "Identity": "/Users/mike/Desktop/datingApp/API/wwwroot/styles.929894290b44c4549b82.css",
+      "Identity": "/Users/mike/Desktop/datingApp/API/wwwroot/styles.da5a52afd5619b5ab0e2.css",
       "SourceId": "API",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/mike/Desktop/datingApp/API/wwwroot/",
       "BasePath": "_content/API",
-      "RelativePath": "styles.929894290b44c4549b82.css",
+      "RelativePath": "styles.da5a52afd5619b5ab0e2.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -235,7 +235,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/styles.929894290b44c4549b82.css"
+      "OriginalItemSpec": "wwwroot/styles.da5a52afd5619b5ab0e2.css"
     }
   ]
 }
