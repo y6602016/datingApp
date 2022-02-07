@@ -35,6 +35,16 @@ namespace API
     }
 
     // This method gets called by the runtime. Use this method to add services to the container.
+    // ConfigureServices manage dependency injection and other services
+
+    // == Dependency Injection ==
+    // All dependency injection registered in the service provider(injection container) can be
+    // used as params in other classes' contruction injection, the service provider can inject the
+    // dependency to the classes without need to create real instances.
+    // ex: we register DbContext in service provider, so when we use context as params in repository
+    // constroctor, service provider inject all fields of DbContext to repository class withot create
+    // a real instance
+    // == Dependency Injection ==
     public void ConfigureServices(IServiceCollection services)
     {
       // use extension method here, this method is defined in extensions folder
@@ -51,6 +61,7 @@ namespace API
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    // Configure manage middleware and routing rules, etc.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       app.UseMiddleware<ExceptionMiddleware>();

@@ -18,15 +18,23 @@ namespace API
     public static async Task Main(string[] args)
     {
       // to seed the data, we build the host first, then create scope
+
+      // first call CreateHostBuilder to create service, call ConfigureServices() and injection 
+      // register work now, then call .Build() we'll get a "host"(aka. app), now the host call
+      // Configure() to add middleware ,routing rules and endpoints...etc. Then it can Run()
       var host = CreateHostBuilder(args).Build();
       using var scope = host.Services.CreateScope();
-      var services = scope.ServiceProvider;
+      var services = scope.ServiceProvider; // service provider = injection container
       try
       {
+        // extract the context instance from the injection container
+        // we need the context instance to migrate the db
         var context = services.GetRequiredService<DataContext>();
         // apply migration the db
         await context.Database.MigrateAsync();
 
+        // extract the UserManager and RoleManager instances from the injection container
+        // we need them to seed the data
         var userManager = services.GetRequiredService<UserManager<AppUser>>();
         var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
         // call Seed class and use it's SeedUser method to seed the data
